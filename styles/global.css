@@ -25,15 +25,3 @@ button {
     border-radius: 5px;
     cursor: pointer;
 }
-
-/* Estilos de modo oscuro */
-body.dark-mode {
-    background-color: #111;
-    color: #ddd;
-}
-
-.form.dark-mode {
-    background-color: #222;
-}
-
-/* Otros estilos personalizados aquí */
