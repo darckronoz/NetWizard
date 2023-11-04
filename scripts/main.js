@@ -14,7 +14,7 @@ const subnets_select = [1, 2, 4, 8, 16, 32, 64, 128, 256];
 let subnet = 1;
 let netType = 10;
 let host = 1;
-const nets = [];
+let nets = [];
 
 // Eventos que se ejecutan al cargar la pagina
 document.addEventListener("DOMContentLoaded", function() {
@@ -52,7 +52,7 @@ generateBtn.addEventListener('click', () => {
 
 //función para generar las subredes
 function generateSubNetAddress() {
-    
+    nets = [];
     const number = 256/subnet;
     for (let i = 0; i < subnet; i++) {
         nets.push(number*i);
@@ -62,8 +62,9 @@ function generateSubNetAddress() {
 
 //función para mostrar las sub redes
 function showNets() {
-    generateSubNetAddress();
+    
     subnetsList.innerHTML = '';
+    generateSubNetAddress();
     for (let i = 0; i < nets.length; i++) {
         const li = document.createElement('li');
         li.textContent = `${i+1}: ${netType}.${nets[i]}.0.0`;
