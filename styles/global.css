@@ -1,0 +1,39 @@
+/* Estilos globales */
+body {
+    background-color: #222;
+    color: #fff;
+    font-family: Arial, sans-serif;
+}
+
+.form {
+    background-color: #333;
+    padding: 20px;
+    border-radius: 10px;
+    margin: 20px;
+}
+
+label, input, button {
+    display: block;
+    margin: 10px 0;
+}
+
+button {
+    background-color: #007BFF;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* Estilos de modo oscuro */
+body.dark-mode {
+    background-color: #111;
+    color: #ddd;
+}
+
+.form.dark-mode {
+    background-color: #222;
+}
+
+/* Otros estilos personalizados aquí */
