@@ -16,7 +16,7 @@
         <select id="subNtwk"></select>
 
         <label for="host">Host:</label>
-        <input type="number" id="host" value="0">
+        <input type="number" id="host" value="0" disabled>
 
         <button id="generate">Generar</button>
     </div>
@@ -27,8 +27,9 @@
             </ul>
         </div>
         <div>
-            <p>Host Range</p>
-            <p id="hostrange"></p>
+            <p>Host Range:</p>
+            <ul id="hostrangeList">
+            </ul>
         </div>
     </div>
     <script src="./scripts/main.js"></script>
