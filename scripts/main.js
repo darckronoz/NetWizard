@@ -1,4 +1,3 @@
-const body = document.body;
 const subNtwkSelect = document.getElementById('subNtwk');
 const netTypeSelect = document.getElementById('netType');
 const hostInput = document.getElementById('host');
@@ -12,12 +11,23 @@ let hosts = [];
 document.addEventListener("DOMContentLoaded", function () {
     fillSubNetSelect();
     fillNetTypeSelect();
+    updateHostInput();
+
+    generateBtn.addEventListener('click', () => {
+        netType = netTypeSelect.value;
+        const subnetCount = parseInt(subNtwkSelect.value);
+        const totalHosts = parseInt(hostInput.value);
+
+        updateHostInput();
+        calculateVLSM(subnetCount, totalHosts);
+        displayResults();
+    });
 });
 
 function fillSubNetSelect() {
     const subnets_select = [1, 2, 4, 8, 16, 32, 64, 128, 256];
     subnets_select.forEach(e => {
-        let option = document.createElement('option');
+        let option = document.createElement('option'); 
         option.value = e;
         option.text = e;
         subNtwkSelect.appendChild(option);
@@ -33,15 +43,6 @@ function fillNetTypeSelect() {
         netTypeSelect.appendChild(option);
     });
 }
-
-generateBtn.addEventListener('click', () => {
-    netType = netTypeSelect.value;
-    const subnetCount = parseInt(subNtwkSelect.value);
-    const totalHosts = parseInt(hostInput.value);
-
-    calculateVLSM(subnetCount, totalHosts);
-    displayResults();
-});
 
 function calculateVLSM(subnetCount, totalHosts) {
     hosts = [];
@@ -76,4 +77,14 @@ function displayResults() {
         li.textContent = `Subred ${host.subnet}\nMáscara de Subred: ${host.subnetMask}\nDirección de Red: ${host.networkAddress}\nDirección de Broadcast: ${host.broadcastAddress}\nDirección del Enrutador: ${host.routerAddress}\nRango de Direcciones IP: ${host.hostRange}\n`;
         resultsList.appendChild(li);
     });
+}
+
+function updateHostInput() {
+    const selectedNetType = parseInt(netTypeSelect.value);
+    const selectedSubnet = parseInt(subNtwkSelect.value);
+
+    const maxHosts = Math.pow(2, 32 - selectedSubnet) - 2;
+
+    hostInput.max = maxHosts;
+    hostInput.disabled = false;
 }
