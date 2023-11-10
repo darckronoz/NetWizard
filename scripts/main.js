@@ -57,6 +57,7 @@ function fillNetTypeSelect() {
 // valor = cantidad de hosts (queda en 1 hasta que el usuario cambie algun valor)
 subnetBtn.addEventListener('click', () => {
     subnet = subNtwkSelect.value;
+    subnetsList.innerHTML = ' ';
     for(let i = 0; i < subnet; i++) {
         let p = document.createElement('p');
         let li = document.createElement('li');
