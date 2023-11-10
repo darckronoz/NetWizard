@@ -4,12 +4,16 @@ const subNtwkSelect = document.getElementById('subNtwk');
 const netTypeSelect = document.getElementById('netType');
 const hostInput = document.getElementById('host');
 const generateBtn = document.getElementById('generate');
+const subnetBtn = document.getElementById('subnetButton');
 const hostResult = document.getElementById('hostrange');
 const subnetsResult = document.getElementById('subnets');
 const subnetsList = document.getElementById('subNetList');
 const hostrangeList = document.getElementById('hostrangeList');
+const errorSubnet = document.getElementById('error_nosubnets');
+const clearSubNetBtn = document.getElementById('clearSubNetList');
 
 //To Do: 
+const initialIP = '10.0.0.0';
 const net_type_select = [10, 66, 128, 192];
 const subnets_select = [1, 2, 4, 8, 16, 32, 64, 128, 256];
 let subnet = 1;
@@ -17,9 +21,12 @@ let netType = 10;
 let host = 1;
 let nets = [];
 let hosts = [];
+let info = {};
+let subnetGenerated = false;
 
 // Eventos que se ejecutan al cargar la pagina
 document.addEventListener("DOMContentLoaded", function() {
+    subnetGenerated = false;
     fillSubNetSelect();
     fillNetTypeSelect();
 });
@@ -44,13 +51,52 @@ function fillNetTypeSelect() {
     });
 }
 
+//evento generar subredes, esto llena el 
+//diccionario info con: 
+// llave = subnetid
+// valor = cantidad de hosts (queda en 1 hasta que el usuario cambie algun valor)
+subnetBtn.addEventListener('click', () => {
+    subnet = subNtwkSelect.value;
+    for(let i = 0; i < subnet; i++) {
+        let p = document.createElement('p');
+        let li = document.createElement('li');
+        let input = document.createElement('input');
+        p.textContent = String(i+1) + ': ';
+        input.type = 'number';
+        input.value = '1';
+        input.id = 'subnet'+String(i+1);
+        li.appendChild(p);
+        li.appendChild(input);
+        subnetsList.append(li);
+        info[i+1] = 1;
+        input.addEventListener('change', () => {
+            const inputId = event.target.id;
+            const index = parseInt(inputId.replace('subnet', ''), 10);
+            info[index] = parseInt(event.target.value, 10);
+        });
+    }
+    subnetGenerated = true;
+    errorSubnet.classList.add('hidden');
+    clearSubNetBtn.classList.remove('hidden');
+});
+
 //evento generar
 generateBtn.addEventListener('click', () => {
-    netType = netTypeSelect.value;
-    subnet = subNtwkSelect.value;
-    host = hostInput.value;
-    showNets();
-    showHostRange();
+    if(subnetGenerated) {
+        netType = netTypeSelect.value;
+        subnet = subNtwkSelect.value;
+        host = hostInput.value;
+        showNets();
+        showHostRange();
+    }else {
+        errorSubnet.classList.remove('hidden');
+    }
+});
+
+clearSubNetBtn.addEventListener('click', () => {
+    subnetsList.innerHTML = ' ';
+    subnetGenerated = false;
+    clearSubNetBtn.classList.add('hidden');
 });
 
 //función para generar las subredes

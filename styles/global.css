@@ -5,6 +5,27 @@ body {
     font-family: Arial, sans-serif;
 }
 
+.hidden {
+    display: none;
+}
+
+button {
+    background-color: #007BFF;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.clean_btn{
+    background-color:#ff1e00
+}
+
+.generatebtn{
+    background-color:#26aa01
+}
+
 .form {
     background-color: #333;
     padding: 20px;
@@ -17,11 +38,13 @@ label, input, button {
     margin: 10px 0;
 }
 
-button {
-    background-color: #007BFF;
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
+
+
+/* Ocultar por defecto */
+
+
+/* Estilos adicionales para el mensaje de error si es necesario */
+.error {
+    color: red;
+    font-weight: bold;
 }
