@@ -10,32 +10,37 @@
     <h1>Generador de direccionamiento de red</h1>
 
     <div class="form">
-            <label for="netType">Net type:</label>
-            <select id="netType"></select>
-    
-            <label for="subNtwk">Sub Net:</label>
-            <select id="subNtwk"></select>
-            <button class="generatebtn" id="subnetButton">load subnets</button>
-            <p class="error hidden" id="error_nosubnets">Profavor, primero genere las subredes</p>
-            <!-- <label for="host">Host:</label>
-            <input type="number" id="host" value="1"> -->
-    
-            <button id="generate">Generar</button>
+        <label for="netType">Net type:</label>
+        <select id="netType"></select>
+
+        <label for="subNtwk">Sub Net:</label>
+        <select id="subNtwk"></select>
+        <button class="generatebtn" id="subnetButton">Load subnets</button>
+        <p class="error hidden" id="error_nosubnets">Por favor, primero genere las subredes</p>
+
+        <label for="departmentCount">Cantidad de departamentos:</label>
+        <input type="number" id="departmentCount" min="1">
+        
+        <div id="departmentQuestions" class="hidden">
+            <h2>Preguntas sobre departamentos:</h2>
+            <div id="departmentDetails"></div>
+        </div>
+
+        <button id="generate">Generar</button>
     </div>
+
     <div class="respuesta">
         <div id="subnetsResult">
             <p>subNet Address:</p>
-            <ul id="subNetList">
-            </ul>
+            <ul id="subNetList"></ul>
         </div>
         <button class="hidden clean_btn" id="clearSubNetList">Clean Subnet</button>
         <div>
             <p>Host Range:</p>
-            <ul id="hostrangeList">
-            </ul>
+            <ul id="hostrangeList"></ul>
         </div>
     </div>
-    
+
     <script src="./scripts/main.js"></script>
 </body>
 </html>
