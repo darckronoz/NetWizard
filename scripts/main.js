@@ -24,6 +24,7 @@ let hosts = [];
 let info = {};
 let subnetGenerated = false;
 let departmentCount = 1; // Valor predeterminado
+let subnetClass = 'A'; // Valor predeterminado
 
 // Eventos que se ejecutan al cargar la pagina
 document.addEventListener("DOMContentLoaded", function() {
@@ -89,21 +90,32 @@ subnetBtn.addEventListener('click', () => {
 });
 
 
-// Modifica el evento del botón "Generar" para recopilar la información de los departamentos
+// Modificar el evento del botón "Generar" para recopilar la información de los departamentos
 generateBtn.addEventListener('click', () => {
     if (subnetGenerated) {
         netType = netTypeSelect.value;
         subnet = subNtwkSelect.value;
         host = hostInput.value;
+        subnetClass = document.getElementById('subnetClass').value; // Obtener la clase de la subred
         showNets();
         showHostRange();
         // Recopilar información sobre departamentos
         const departmentInfo = collectDepartmentInfo();
         console.log(departmentInfo);
 
-        // ... (resto del código)
+        // Calcular y mostrar el rango de direcciones IP utilizables
+        const ipRange = calculateIPRange(netType, subnet, subnetClass);
+        console.log("Rango de direcciones IP utilizables:", ipRange);
+
+        // Mostrar la información de los departamentos como cartas
+        showDepartmentCards(departmentInfo);
+
+        // Resto del código después de mostrar las cartas
+        // Puedes agregar aquí cualquier lógica adicional que desees ejecutar después de mostrar las cartas.
+
     } else {
         errorSubnet.classList.remove('hidden');
+        clearSubNetBtn.classList.remove('hidden'); // Agrega esto si lo necesitas
     }
 });
 
@@ -160,6 +172,29 @@ function showHostRange() {
         li.textContent = `Subnet ${sn}: ${h}`;
         hostrangeList.appendChild(li);
     });
+}
+
+// Nueva función para calcular el rango de direcciones IP utilizables
+function calculateIPRange(netType, subnet, subnetClass) {
+    const subnetNumber = parseInt(subnet);
+    const subnetSize = 256 / subnetNumber;
+    const subnetStart = subnetSize * (subnetNumber - 1);
+    const subnetEnd = subnetSize * subnetNumber - 1;
+
+    let rangeStart, rangeEnd;
+
+    if (subnetClass === 'A') {
+        rangeStart = `${netType}.0.0.1`;
+        rangeEnd = `${netType}.${subnetStart - 1}.255.254`;
+    } else if (subnetClass === 'B') {
+        rangeStart = `${netType}.${subnetStart}.0.1`;
+        rangeEnd = `${netType}.${subnetStart + subnetSize - 1}.255.254`;
+    } else if (subnetClass === 'C') {
+        rangeStart = `${netType}.${subnetStart}.0.1`;
+        rangeEnd = `${netType}.${subnetStart}.255.254`;
+    }
+
+    return `${rangeStart} - ${rangeEnd}`;
 }
 
 // Función para mostrar las preguntas adicionales sobre cada departamento
