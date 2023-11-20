@@ -1,0 +1,67 @@
+/* Estilos globales */
+body {
+    background-color: #222;
+    color: #fff;
+    font-family: Arial, sans-serif;
+}
+
+.hidden {
+    display: none;
+}
+
+button {
+    background-color: #007BFF;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.clean_btn{
+    background-color:#ff1e00
+}
+
+.generatebtn{
+    background-color:#26aa01
+}
+
+.form {
+    background-color: #333;
+    padding: 20px;
+    border-radius: 10px;
+    margin: 20px;
+}
+
+label, input, button {
+    display: block;
+    margin: 10px 0;
+}
+
+/* Estilos adicionales para el mensaje de error si es necesario */
+.error {
+    color: red;
+    font-weight: bold;
+}
+
+/* Estilos para las cartas de departamento */
+.department-card {
+    background-color: #444;
+    padding: 15px;
+    border-radius: 10px;
+    margin: 10px 0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.department-card h3 {
+    color: #007BFF;
+}
+
+.department-card p {
+    margin: 5px 0;
+}
+
+/* Estilos para el contenedor de cartas de departamento */
+#departmentDetails {
+    margin-top: 20px;
+}
