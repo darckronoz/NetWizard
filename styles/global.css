@@ -1,72 +1,91 @@
-/* Estilos globales */
+
 body {
-    background-color: #222;
     color: #fff;
     font-family: Arial, sans-serif;
-}
-
-.hidden {
-    display: none;
-}
-
-button {
-    background-color: #007BFF;
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.clean_btn{
-    background-color:#ff1e00
-}
-
-.generatebtn{
-    background-color:#26aa01
-}
-
-.form {
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #222; /* Cambia el color de fondo según tu preferencia */
+  }
+  
+  .main {
+    text-align: center;
     background-color: #333;
     padding: 20px;
+    border-radius: 8px;
+    box-shadow: 5px 10px 10px rgba(0, 0, 0);
+    border: 0.5px solid transparent; /* Establecemos un borde transparente */
+    animation: rainbowBorder 2s infinite linear; /* Animación para cambiar los colores */
+  }
+  
+   .comenzar-btn {
+    background-color: #ffbf00;
+    color: #222;
+    font-family: Arial, sans-serif;
+    padding: 15px 30px;
+    cursor: pointer;
+    border: none;
     border-radius: 10px;
-    margin: 20px;
-}
+    transition: background-color 0.5s ease, transform 0.3s ease;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+  }
+  
+  .comenzar-btn:hover {
+    animation: rainbowWave 1s, moveUpRight 0.3s forwards;
+    box-shadow: 0px 10px 20px rgb(0, 0, 0);
+  }
+  
+  @keyframes moveUpRight {
+    to {
+      transform: translate(2px, -2px);
+    }
+  }
 
-label, input, button {
-    display: block;
-    margin: 10px 0;
-}
+  @keyframes rainbowWave {
+    0% {
+      background: linear-gradient(45deg, #ff0000, #ffbf00, #00ff00, #0000ff, #ff00ff, #ff0000, #ff00ff, #0000ff, #00ff00, #ffbf00, #ff0000);
+      background-size: 600% 600%;
+      background-position: 0% 50%;
+    }
+    100% {
+      background-position: 100% 50%;
+    }
+  }
 
-
-
-/* Ocultar por defecto */
-
-
-/* Estilos adicionales para el mensaje de error si es necesario */
-.error {
-    color: red;
-    font-weight: bold;
-}
-
-/* Estilos para las cartas de departamento */
-.department-card {
-    background-color: #444;
-    padding: 15px;
-    border-radius: 10px;
-    margin: 10px 0;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.department-card h3 {
-    color: #007BFF;
-}
-
-.department-card p {
-    margin: 5px 0;
-}
-
-/* Estilos para el contenedor de cartas de departamento */
-#departmentDetails {
-    margin-top: 20px;
-}
+  @keyframes rainbowBorder {
+    0% {
+      border-image: linear-gradient(45deg, #ff0000, #ffbf00, #00ff00, #0000ff, #ff00ff, #ff0000);
+      border-image-slice: 1; /* Establecemos la cantidad de borde a usar como imagen */
+    }
+    16.6% {
+        border-image: linear-gradient(45deg, #ffbf00, #00ff00, #0000ff, #ff00ff, #ff0000, #ff0000);
+        border-image-slice: 6;
+    }
+    33.2% {
+        border-image: linear-gradient(45deg, #00ff00, #0000ff, #ff00ff, #ff0000, #ff0000, #ffbf00);
+        border-image-slice: 6;
+    }
+    49.8% {
+        border-image: linear-gradient(45deg, #0000ff, #ff00ff, #ff0000, #ff0000, #ffbf00,  #00ff00);
+        border-image-slice: 6;
+    }
+    66.4% {
+        border-image: linear-gradient(45deg, #ff00ff, #ff0000, #ff0000, #ffbf00,  #00ff00, #0000ff);
+        border-image-slice: 12;
+    }
+    83% {
+        border-image: linear-gradient(45deg, #ff0000, #ff0000, #ffbf00,  #00ff00, #0000ff, #ff00ff);
+        border-image-slice: 12;
+    }
+    100% {
+        border-image: linear-gradient(45deg, #ff0000, #ffbf00, #00ff00, #0000ff, #ff00ff, #ff0000);
+        border-image-slice: 12;
+    }
+  }
+  
+  
+  
+  
+  

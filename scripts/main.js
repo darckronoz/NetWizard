@@ -92,6 +92,7 @@ subnetBtn.addEventListener('click', () => {
 
 // Modificar el evento del botón "Generar" para recopilar la información de los departamentos
 generateBtn.addEventListener('click', () => {
+    sortSubnetsByHosts();
     if (subnetGenerated) {
         netType = netTypeSelect.value;
         subnet = subNtwkSelect.value;
