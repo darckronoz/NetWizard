@@ -48,3 +48,25 @@ label, input, button {
     color: red;
     font-weight: bold;
 }
+
+/* Estilos para las cartas de departamento */
+.department-card {
+    background-color: #444;
+    padding: 15px;
+    border-radius: 10px;
+    margin: 10px 0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.department-card h3 {
+    color: #007BFF;
+}
+
+.department-card p {
+    margin: 5px 0;
+}
+
+/* Estilos para el contenedor de cartas de departamento */
+#departmentDetails {
+    margin-top: 20px;
+}
