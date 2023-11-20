@@ -13,7 +13,7 @@ const errorSubnet = document.getElementById('error_nosubnets');
 const clearSubNetBtn = document.getElementById('clearSubNetList');
 
 //To Do: 
-const initialIP = '10.0.0.0';
+const initialIP = '192.168.1.1';
 const net_type_select = [10, 66, 128, 192];
 const subnets_select = [1, 2, 4, 8, 16, 32, 64, 128, 256];
 let subnet = 1;
@@ -81,9 +81,10 @@ subnetBtn.addEventListener('click', () => {
     clearSubNetBtn.classList.remove('hidden');
 });
 
-//evento generar
+//evento generar hosts
 generateBtn.addEventListener('click', () => {
     if(subnetGenerated) {
+        sortSubnetsByHosts();
         netType = netTypeSelect.value;
         subnet = subNtwkSelect.value;
         host = hostInput.value;
@@ -93,6 +94,12 @@ generateBtn.addEventListener('click', () => {
         errorSubnet.classList.remove('hidden');
     }
 });
+
+//ordenar descendentemente por cantidad de hosts.
+function sortSubnetsByHosts() {
+    
+}
+
 
 clearSubNetBtn.addEventListener('click', () => {
     subnetsList.innerHTML = ' ';
