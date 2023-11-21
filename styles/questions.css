@@ -9,29 +9,131 @@ body {
     background-color: #222;
   }
 
-  .main {
-    text-align: center;
-    background-color: #333;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 5px 10px 10px rgba(0, 0, 0);
-  }
-  
-  .trademark {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    margin: 10px;
-    font-family: 'Courier New', Courier, monospace;
-  } 
+.form {
+  width: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 
-  .version {
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    margin: 10px;
-    font-family: 'Courier New', Courier, monospace;
-  }
+.main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #333;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 5px 10px 10px rgba(0, 0, 0, 0.5);
+  width: 600px;
+  margin: 0 auto;
+}
+
+hr {
+  width: 100%; /* Ocupar todo el ancho disponible */
+  height: 1px; /* Altura del hr */
+  border: 1px;
+  background-image: linear-gradient(to right, #ffffff, #ab79d6, #ab79d6, #ab79d6, #ffffff);
+  margin-top: 0;
+  margin-bottom: 10px; 
+}
+
+h1 {
+  margin-bottom: 5px;
+}
+
+label {
+  margin-bottom: 5px;
+  text-align: center;
+  color: #ffffff; 
+  font-size: 16px;
+  display: block;
+}
+
+input {
+  text-align: center;
+  padding: 8px;
+  font-size: 16px;
+  border: 1px solid #ab79d6; /* Amarillo quemado */
+  border-radius: 20px;
+  outline: none;
+  transition: border-color 0.3s ease;
+  background-color: #333;
+  color: #ffffff;
+}
+
+input:focus {
+  border-color: #ab79d6; /* Amarillo quemado */
+  box-shadow: 0 0 10px #ab79d6;
+}
+
+select {
+  padding: 8px;
+  font-size: 16px;
+  border: 1px solid #ab79d6; /* Amarillo quemado */
+  border-radius: 5px;
+  outline: none;
+  transition: border-color 0.3s ease;
+  background-color: transparent; /* Fondo transparente */
+  color: #ab79d6; /* Texto en blanco */
+  font-weight: bold;
+}
+
+/* Estilos para el efecto neon al enfocar */
+select:focus {
+  border-color: #ab79d6; /* Amarillo quemado */
+  box-shadow: 0 0 10px #ab79d6;
+}
+
+.main input,
+.main select,
+.main button {
+  display: block; 
+  margin-bottom: 20px;
+}
+
+.main button {
+  margin-top: 20px;
+  padding: 7px 20px;
+  font-size: 16px;
+  border: 2px solid transparent;
+  border-radius: 10px;
+  background-color: #ab79d6;
+  color: #351d68;
+  box-shadow: 0 0 10px #ab79d6, 0 0 10px #ab79d6 inset;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.main button:hover {
+  box-shadow: 0 0 0px #ab79d6, 0 0 0px #ab79d6 inset;
+  background-color: #351d68;
+  color: #ab79d6;
+  border: 2px solid;
+  border-color: #ab79d6;
+}
+
+.trademark {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  margin: 10px;
+  font-family: 'Courier New', Courier, monospace;
+} 
+
+.version {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  margin: 10px;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
 
 
   
