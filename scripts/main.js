@@ -9,14 +9,19 @@ let ip = '192.168.0.0'; // Valor predeterminado
 let subnets = {};
 let growthrate = 0;
 
-// Eventos que se ejecutan al cargar la pagina
-document.addEventListener("DOMContentLoaded", function() {
-});
-
-// Nuevo evento al cambiar la cantidad de departamentos
-document.getElementById('departmentCount').addEventListener('change', function () {
-    departmentCount = parseInt(this.value, 10);
-    showDepartmentQuestions(departmentCount);
+//boton siguiente pregunta.
+saveInfoBtn.addEventListener('click', () => {
+    for (let i = 0; i < departmentCount; i++) {
+        const department = {
+            name: '',
+            employeeCount: 0,
+            wifi: false,
+            networkDevices: 0
+        };
+        savedDepartmentInfo.push(department);
+    }
+    saveDepartmentInfo();
+    window.location.href = "question_card.html";
 });
 
 // Función para mostrar las preguntas adicionales sobre cada departamento
@@ -61,33 +66,12 @@ function showDepartmentQuestions(count) {
 
 // Nueva función para guardar la información en un array
 function saveDepartmentInfo() {
-    const departmentInfo = collectDepartmentInfo();
-    // Almacena la información en una constante o variable
-    // En este ejemplo, uso una variable global llamada 'savedDepartmentInfo'
-    savedDepartmentInfo = departmentInfo;
+    
     console.log("Información de departamentos guardada:", savedDepartmentInfo);
     alert("Información de departamentos guardada correctamente.");
 }
 
-saveInfoBtn.addEventListener('click', () => {
-// Nueva función para recopilar las respuestas sobre los departamentos
-    for (let i = 0; i < departmentCount; i++) {
-        const department = {
-            name: document.getElementById(`departmentName${i}`).value,
-            employeeCount: parseInt(document.getElementById(`employeeCount${i}`).value, 10),
-            wifi: document.getElementById(`wifi${i}`).checked,
-            networkDevices: parseInt(document.getElementById(`networkDevices${i}`).value, 10),
-        };
 
-        const subnet = {
-            name: 'marketuing',
-            netid: '192.168.0.0',
-            range: '192.168.0.1-192.168.0.255',
-            networkDevices: 5
-        }
-        savedDepartmentInfo.push(department);
-    }
-});
 
 //ip = '192.168.0.0'
 //nets = {'red1':24, 'red2':32, 'red3':40}
