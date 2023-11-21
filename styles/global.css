@@ -9,7 +9,7 @@ body {
     height: 100vh;
     background-color: #222; /* Cambia el color de fondo según tu preferencia */
   }
-  
+
   .main {
     text-align: center;
     background-color: #333;
@@ -20,6 +20,14 @@ body {
     animation: rainbowBorder 2s infinite linear; /* Animación para cambiar los colores */
   }
   
+  .trademark {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    margin: 10px;
+    font-family: 'Courier New', Courier, monospace;
+  } 
+
    .comenzar-btn {
     background-color: #ffbf00;
     color: #222;
