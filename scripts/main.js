@@ -8,6 +8,20 @@ let savedDepartmentInfo = [];
 let ip = '192.168.0.0'; // Valor predeterminado
 let subnets = {};
 let growthrate = 0;
+let subnetClass = '';
+let departments = 0;
+
+//al cargar la pagina
+document.addEventListener('DOMContentLoaded', () => {
+    if(parseInt(localStorage.getItem('departments')) > 0) {
+        departments = parseInt(localStorage.getItem('departments'));
+        growthrate = parseInt(localStorage.getItem('growth'));
+        subnetClass = localStorage.getItem('class');
+    }else {
+        alert('no deberías estar aqui :0');
+        window.location.href = "questions.html";
+    }
+});
 
 //boton siguiente pregunta.
 saveInfoBtn.addEventListener('click', () => {
@@ -66,7 +80,7 @@ function showDepartmentQuestions(count) {
 
 // Nueva función para guardar la información en un array
 function saveDepartmentInfo() {
-    
+
     console.log("Información de departamentos guardada:", savedDepartmentInfo);
     alert("Información de departamentos guardada correctamente.");
 }
