@@ -1,65 +1,57 @@
-function vlsm(ip, nets) {
-    // Ordenar las subredes de forma ascendente
-    const sortedNets = Object.entries(nets).sort((a, b) => a[1] - b[1]);
+function obtenerClaseDeRed(ip) {
+    const octetos = ip.split('.').map(Number);
 
-    // Convertir la IP inicial a un array de números
-    const ipArray = ip.split('.').map(Number);
-
-    // Función para convertir un número a formato de dirección IP
-    function numToIp(numArray) {
-        return numArray.join('.');
+    if (octetos[0] >= 1 && octetos[0] <= 126) {
+        return 'A';
+    } else if (octetos[0] >= 128 && octetos[0] <= 191) {
+        return 'B';
+    } else if (octetos[0] >= 192 && octetos[0] <= 223) {
+        return 'C';
+    } else {
+        throw new Error('Dirección IP no válida');
     }
-
-    // Función para calcular la máscara de subred en formato de array
-    function calculateSubnetMask(prefixLength) {
-        const mask = [0, 0, 0, 0];
-        for (let i = 0; i < prefixLength; i++) {
-            mask[Math.floor(i / 8)] |= 1 << (7 - (i % 8));
-        }
-        return mask;
-    }
-
-    // Función para calcular el rango de IPs utilizables en una subred
-    function calculateIPRange(network, prefixLength) {
-        const networkArray = network.split('.').map(Number);
-        const subnetMask = calculateSubnetMask(prefixLength);
-        const startIP = networkArray.map((octet, i) => octet & subnetMask[i]).join('.');
-        const endIP = networkArray.map((octet, i) => octet | ~subnetMask[i] & 255).join('.');
-        return [startIP, endIP];
-    }
-
-    // Resultado final
-    const result = {};
-
-    // Aplicar VLSM
-    let currentIP = [...ipArray];
-
-    sortedNets.forEach(([subnetName, subnetSize]) => {
-        const subnetMaskLength = 32 - Math.log2(subnetSize);
-        const [startIP, endIP] = calculateIPRange(numToIp(currentIP), subnetMaskLength);
-        
-
-        // Guardar el rango de IPs utilizables en el resultado
-        result[subnetName] = {
-            start: startIP,
-            end: endIP
-        };
-
-       // Calcular la siguiente dirección IP disponible después del rango de la subred
-        currentIP = endIP.split('.').map(Number);
-        currentIP[3] += 1; // Incrementar la última parte del octeto
-
-        // Actualizar la IP actual para la siguiente subred
-        currentIP = currentIP.map((octet, i) => i === 3 ? octet : octet % 256);
-
-    });
-
-    return result;
 }
 
-// Ejemplo de uso:
-const ip = '192.168.0.0';
-const nets = { 'red1': 24, 'red2': 32, 'red3': 40, 'red4': 32, 'red5': 32, 'red6': 32 };
+function vslm(ip, nets) {
+    const claseDeRed = obtenerClaseDeRed(ip);
 
-const result = vlsm(ip, nets);
-console.log(result);
+    const subredesOrdenadas = Object.entries(nets)
+        .filter(([_, hosts]) => hosts > 1)
+        .sort((a, b) => b[1] - a[1]);
+
+    console.log('Subredes ordenadas:', subredesOrdenadas);
+
+    let redBase;
+    if (claseDeRed === 'A') {
+        redBase = ip.split('.').slice(0, 3).join('.');
+    } else if (claseDeRed === 'B') {
+        redBase = ip.split('.').slice(0, 2).join('.');
+    } else if (claseDeRed === 'C') {
+        redBase = ip.split('.').slice(0, 3).join('.');
+    }
+
+    let inicioHost = 1;
+
+    for (const [nombre, hosts] of subredesOrdenadas) {
+        const bitsParaHosts = Math.ceil(Math.log2(hosts + 2));  // Se agrega 2 para la dirección de red y de broadcast
+        const bitsParaSubred = 32 - bitsParaHosts;
+
+        const mascaraSubred = (2 ** bitsParaSubred) - 1;
+        const incremento = 2 ** bitsParaHosts;
+
+        const rangoInicio = inicioHost;
+        const rangoFin = inicioHost + incremento - 3;  // Restamos 3 para excluir la dirección de broadcast
+
+        const direccionRed = `${redBase}.${inicioHost}`;
+        const direccionBroadcast = `${redBase}.${rangoFin + 1}`;  // Sumamos 1 para la dirección de broadcast
+
+        console.log(`${nombre}: Rango: ${redBase}.${rangoInicio}-${redBase}.${rangoFin}, Dirección de Red: ${direccionRed}, Dirección de Broadcast: ${direccionBroadcast}, Máscara de Subred: /${bitsParaSubred}`);
+
+        inicioHost += incremento;
+    }
+}
+
+// Ejemplo de uso
+const ip = '192.168.0.0';
+const subredes = { 'red1': 84, 'red2': 32, 'red3': 40 };
+vslm(ip, subredes);
