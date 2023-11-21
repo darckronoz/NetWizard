@@ -20,6 +20,19 @@ body {
     animation: rainbowBorder 2s infinite linear;
   }
   
+  .p-info {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .version {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    margin: 10px;
+    font-family: 'Courier New', Courier, monospace;
+  }
+
   .trademark {
     position: absolute;
     bottom: 0;

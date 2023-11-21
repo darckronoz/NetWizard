@@ -1,22 +1,16 @@
 const body = document.body;
 // Obtener elementos del DOM
 const generateBtn = document.getElementById('generate');
+const saveInfoBtn = document.getElementById('save-info');
 
 //To Do: 
-const subnets_select = [1, 2, 4, 8, 16, 32, 64, 128, 256];
-let subnet = 1;
-let netType = 10;
-let host = 1;
-let nets = [];
-let hosts = [];
-let info = {};
-let subnetGenerated = false;
-let departmentCount = 1; // Valor predeterminado
-let subnetClass = 'A'; // Valor predeterminado
+let savedDepartmentInfo = [];
+let ip = '192.168.0.0'; // Valor predeterminado
+let subnets = {};
+let growthrate = 0;
 
 // Eventos que se ejecutan al cargar la pagina
 document.addEventListener("DOMContentLoaded", function() {
-    subnetGenerated = false;
 });
 
 // Nuevo evento al cambiar la cantidad de departamentos
@@ -24,127 +18,6 @@ document.getElementById('departmentCount').addEventListener('change', function (
     departmentCount = parseInt(this.value, 10);
     showDepartmentQuestions(departmentCount);
 });
-
-//evento generar subredes, esto llena el 
-//diccionario info con: 
-// llave = subnetid
-// valor = cantidad de hosts (queda en 1 hasta que el usuario cambie algun valor)
-// subnetBtn.addEventListener('click', () => {
-//     subnet = subNtwkSelect.value;
-//     subnetsList.innerHTML = ' ';
-//     for(let i = 0; i < subnet; i++) {
-//         let p = document.createElement('p');
-//         let li = document.createElement('li');
-//         let input = document.createElement('input');
-//         p.textContent = String(i+1) + ': ';
-//         input.type = 'number';
-//         input.value = '1';
-//         input.id = 'subnet'+String(i+1);
-//         li.appendChild(p);
-//         li.appendChild(input);
-//         subnetsList.append(li);
-//         info[i+1] = 1;
-//         input.addEventListener('change', () => {
-//             const inputId = event.target.id;
-//             const index = parseInt(inputId.replace('subnet', ''), 10);
-//             info[index] = parseInt(event.target.value, 10);
-//         });
-//     }
-//     subnetGenerated = true;
-// });
-
-// Modificar el evento del botón "Generar" para recopilar la información de los departamentos
-generateBtn.addEventListener('click', () => {
-    sortSubnetsByHosts();
-    if (subnetGenerated) {
-        netType = netTypeSelect.value;
-        subnet = subNtwkSelect.value;
-        host = hostInput.value;
-        subnetClass = document.getElementById('subnetClass').value; // Obtener la clase de la subred
-        showNets();
-        showHostRange();
-        // Recopilar información sobre departamentos
-        const departmentInfo = collectDepartmentInfo();
-        console.log(departmentInfo);
-
-        // Calcular y mostrar el rango de direcciones IP utilizables
-        const ipRange = calculateIPRange(netType, subnet, subnetClass);
-        console.log("Rango de direcciones IP utilizables:", ipRange);
-
-        // Mostrar la información de los departamentos como cartas
-        showDepartmentCards(departmentInfo);
-
-        // Resto del código después de mostrar las cartas
-        // Puedes agregar aquí cualquier lógica adicional que desees ejecutar después de mostrar las cartas.
-    }
-});
-
-//ordenar descendentemente por cantidad de hosts.
-function sortSubnetsByHosts() {
-    
-}
-
-//función para mostrar las sub redes
-function showNets() {
-    subnetsList.innerHTML = '';
-    generateSubNetAddress();
-    for (let i = 0; i < nets.length; i++) {
-        const li = document.createElement('li');
-        li.textContent = `${i+1}: ${netType}.${nets[i]}.0.0`;
-        subnetsList.appendChild(li);
-    }
-}
-
-//función para generar los rangos de los hosts
-function generateHostRange() {
-    hosts = [];
-    for (let i = 0; i < nets.length; i++) {
-        let end = '';
-        let begin = `${netType}.${nets[i]}.0.1`;
-        if(i < nets.length-1) {
-            end = `${netType}.${nets[i+1]-1}.255.254`;
-        }else {
-            end = `${netType}.255.255.254`;
-        }
-        hosts.push(begin + ' - ' + end);
-    }
-}
-
-//función que muestra los rangos de red
-function showHostRange() {
-    hostrangeList.innerHTML = '';
-    generateHostRange();
-    let sn = 0;
-    hosts.forEach(h => {
-        sn++;
-        const li = document.createElement('li');
-        li.textContent = `Subnet ${sn}: ${h}`;
-        hostrangeList.appendChild(li);
-    });
-}
-
-// Nueva función para calcular el rango de direcciones IP utilizables
-function calculateIPRange(netType, subnet, subnetClass) {
-    const subnetNumber = parseInt(subnet);
-    const subnetSize = 256 / subnetNumber;
-    const subnetStart = subnetSize * (subnetNumber - 1);
-    const subnetEnd = subnetSize * subnetNumber - 1;
-
-    let rangeStart, rangeEnd;
-
-    if (subnetClass === 'A') {
-        rangeStart = `${netType}.0.0.1`;
-        rangeEnd = `${netType}.${subnetStart - 1}.255.254`;
-    } else if (subnetClass === 'B') {
-        rangeStart = `${netType}.${subnetStart}.0.1`;
-        rangeEnd = `${netType}.${subnetStart + subnetSize - 1}.255.254`;
-    } else if (subnetClass === 'C') {
-        rangeStart = `${netType}.${subnetStart}.0.1`;
-        rangeEnd = `${netType}.${subnetStart}.255.254`;
-    }
-
-    return `${rangeStart} - ${rangeEnd}`;
-}
 
 // Función para mostrar las preguntas adicionales sobre cada departamento
 function showDepartmentQuestions(count) {
@@ -186,24 +59,6 @@ function showDepartmentQuestions(count) {
     departmentQuestionsContainer.classList.remove('hidden');
 }
 
-// Nueva función para recopilar las respuestas sobre los departamentos
-function collectDepartmentInfo() {
-    const departmentInfo = [];
-
-    for (let i = 0; i < departmentCount; i++) {
-        const department = {
-            name: document.getElementById(`departmentName${i}`).value,
-            employeeCount: parseInt(document.getElementById(`employeeCount${i}`).value, 10),
-            wifi: document.getElementById(`wifi${i}`).checked,
-            networkDevices: parseInt(document.getElementById(`networkDevices${i}`).value, 10),
-        };
-
-        departmentInfo.push(department);
-    }
-
-    return departmentInfo;
-}
-
 // Nueva función para guardar la información en un array
 function saveDepartmentInfo() {
     const departmentInfo = collectDepartmentInfo();
@@ -213,12 +68,30 @@ function saveDepartmentInfo() {
     console.log("Información de departamentos guardada:", savedDepartmentInfo);
     alert("Información de departamentos guardada correctamente.");
 }
-// Declara una variable global para almacenar la información de los departamentos
-let savedDepartmentInfo = [];
 
-// Agrega el botón de "Guardar información"
-const saveInfoBtn = document.createElement('button');
-saveInfoBtn.textContent = 'Guardar información';
-saveInfoBtn.addEventListener('click', saveDepartmentInfo);
-document.getElementById('principal').appendChild(saveInfoBtn);
+saveInfoBtn.addEventListener('click', () => {
+// Nueva función para recopilar las respuestas sobre los departamentos
+    for (let i = 0; i < departmentCount; i++) {
+        const department = {
+            name: document.getElementById(`departmentName${i}`).value,
+            employeeCount: parseInt(document.getElementById(`employeeCount${i}`).value, 10),
+            wifi: document.getElementById(`wifi${i}`).checked,
+            networkDevices: parseInt(document.getElementById(`networkDevices${i}`).value, 10),
+        };
+
+        const subnet = {
+            name: 'marketuing',
+            netid: '192.168.0.0',
+            range: '192.168.0.1-192.168.0.255',
+            networkDevices: 5
+        }
+        savedDepartmentInfo.push(department);
+    }
+});
+
+//ip = '192.168.0.0'
+//nets = {'red1':24, 'red2':32, 'red3':40}
+function vslm(ip, nets) {
+
+}
 
