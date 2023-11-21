@@ -8,15 +8,9 @@
 </head>
 <body>
     
-    <div class="main">
+    <div id="principal" class="main">
         <h1>Generador de direccionamiento de red</h1>
-        <label for="netType">Net type:</label>
-        <select id="netType"></select>
-
-        <label for="subNtwk">Sub Net:</label>
-        <select id="subNtwk"></select>
-        <button class="generatebtn" id="subnetButton">Load subnets</button>
-        <p class="error hidden" id="error_nosubnets">Por favor, primero genere las subredes</p>
+        <br>
 
         <label for="departmentCount">Cantidad de departamentos:</label>
         <input type="number" id="departmentCount" min="1">
@@ -36,6 +30,7 @@
         <button id="generate">Generar</button>
     </div>
     <script src="./scripts/main.js"></script>
+
     <p class="trademark">by: Cristhian vargas - Johan - Juan Cepeda</p>
 </body>
 </html>
