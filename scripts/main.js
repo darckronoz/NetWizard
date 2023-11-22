@@ -14,7 +14,7 @@ let departments = 0;
 document.addEventListener('DOMContentLoaded', () => {
     if(parseInt(localStorage.getItem('departments')) > 0) {
         departments = parseInt(localStorage.getItem('departments'));
-        growthrate = parseInt(localStorage.getItem('growth'));
+        growthrate = parseInt(localStorage.getItem('growth'))/100;
         subnetClass = localStorage.getItem('class');
         createDepartmentsQuestions();
     }else {
@@ -88,7 +88,7 @@ function showQuestion(index) {
         let hosts = parseInt(document.getElementById(`dephost${index}`).value);
         hosts = hosts + hosts*growthrate;
         let netdevices = parseInt(document.getElementById(`netdevices${index}`).value)
-        hosts = hosts + netdevices;
+        hosts = Math.ceil(hosts + netdevices);
         let wifi = document.getElementById(`wifi${index}`).value=='si';
         saveDepartmentInfo(name, hosts, wifi, netdevices);
         if(index == departments-1) {
