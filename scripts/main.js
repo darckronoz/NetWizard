@@ -9,6 +9,7 @@ let depInfo = [];
 let growthrate = 0;
 let subnetClass = '';
 let departments = 0;
+let netdevicesdict = {};
 
 //al cargar la pagina
 document.addEventListener('DOMContentLoaded', () => {
@@ -126,6 +127,7 @@ function convertDepToDictionary() {
     let dict = {};
     depInfo.forEach(dep => {
         dict[dep.name] = dep.host;
+        netdevicesdict[dep.name] = dep.netdevices;
     });
     return dict;
 }
@@ -175,11 +177,13 @@ function setRange(begin, end) {
     var last = getLast(b.join('.'));
 
     return red = {
+        name: '',
         id: a.join('.'),
         mascara: 0,
         first: fisrt,
         last: last,
-        broadcast: b.join('.')
+        broadcast: b.join('.'),
+        netdevices: 0
     };
 }
 
@@ -216,13 +220,13 @@ function vslmDOS(ip, nets) {
     var ranges = []
 
     for(const [nombre, hosts] of subredesOrdenadas) {
-
         const bitsParaHosts = Math.ceil(Math.log2(hosts + 2));
-
         var aux = newip;
         var result = setLastIp(hosts, aux);
         newip = getFisrt(result.broadcast);
         result.mascara = 32 - bitsParaHosts;
+        result.name = nombre;
+        result.netdevices = netdevicesdict[nombre];
         ranges.push(result);
     }
     console.log(ranges);
