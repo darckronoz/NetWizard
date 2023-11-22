@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Representación Gráfica de Subredes</title>
+    <script src="https://unpkg.com/gojs@2.3.11/release/go.js"></script>
+  </head>
+  <body>
+    <div id="myDiagramDiv" style="border: 1px solid black; background: white; width: 100%; height: 700px; position: relative;"></div>
+
+    <script>
+
+    let subnetsData = []
+    function getInfo() {
+    var index = localStorage.getItem('redes');
+      for(let i = 0; i < index; i++) {
+        subnetsData.push(JSON.parse(localStorage.getItem(`info${i}`)));
+      }
+    }
+      function init() {
+        const $ = go.GraphObject.make;
+        const myDiagram = new go.Diagram("myDiagramDiv", {
+          initialAutoScale: go.Diagram.Uniform,
+          contentAlignment: go.Spot.Center,
+          layout: $(go.ForceDirectedLayout, { defaultSpringLength: 10, maxIterations: 300 }),
+          maxSelectionCount: 2
+        });
+        
+        getInfo();
+
+        
+        const subnetNodes = subnetsData.map((dato, index) => ({
+        key: index ,
+        text: dato.name, 
+        color: go.Brush.randomColor(128, 240),
+        range: dato.first + ' - ' + dato.last
+        }));
+
+
+        myDiagram.nodeTemplate = $(go.Node, "Auto",
+          {
+            locationSpot: go.Spot.Center,
+            locationObjectName: "SHAPE",
+            selectionAdorned: false,
+            selectionChanged: nodeSelectionChanged
+          },
+          $(go.Panel, "Vertical",
+            $(go.Shape, "Circle",
+              {
+                name: "SHAPE",
+                fill: "lightgray",
+                strokeWidth: 2,
+                desiredSize: new go.Size(120, 120),
+                portId: ""
+              },
+              new go.Binding("fill", "isSelected", (s, obj) => s ? "red" : obj.part.data.color).ofObject()
+            ),
+            $(go.TextBlock,
+              { margin: 5, stroke: "black", font: "bold 14px sans-serif", maxSize: new go.Size(110, NaN), wrap: go.TextBlock.WrapFit },
+              new go.Binding("text", "text")
+            ),
+            $(go.TextBlock,
+              { margin: 5, stroke: "black", font: "12px sans-serif", maxSize: new go.Size(110, NaN), wrap: go.TextBlock.WrapFit },
+              new go.Binding("text", "range")
+            )
+          )
+        );
+
+        myDiagram.linkTemplate = $(go.Link,
+          {
+            selectable: false,
+            curve: go.Link.Bezier,
+            layerName: "Background"
+          },
+          $(go.Shape, { isPanelMain: true, stroke: "black", strokeWidth: 1 }),
+          $(go.Shape, { toArrow: "Standard" })
+        );
+
+        myDiagram.model = new go.GraphLinksModel(subnetNodes);
+
+        function nodeSelectionChanged(node) {
+          console.log("Nodo seleccionado:", node.data.text);
+        }
+
+        myDiagram.model.addChangedListener(e => {
+          if (e.isTransactionFinished) {
+            console.log("Se ha realizado un cambio en el modelo:", e);
+          }
+        });
+      }
+
+      window.addEventListener('DOMContentLoaded', init);
+    </script>
+  </body>
+</html>
