@@ -14,7 +14,6 @@ document.addEventListener('DOMContentLoaded', () => {
     localStorage.setItem('class', '');
 });
 
-
 //boton siguiente pregunta.
 saveInfoBtn.addEventListener('click', () => {
     if(parseInt(departmentCount.value) > 0) {
