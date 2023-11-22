@@ -10,6 +10,7 @@ let growthrate = 0;
 let subnetClass = '';
 let departments = 0;
 let netdevicesdict = {};
+let ranges = []
 
 //al cargar la pagina
 document.addEventListener('DOMContentLoaded', () => {
@@ -217,7 +218,6 @@ function sortSubnets(subnets) {
 function vslmDOS(ip, nets) {
     const subredesOrdenadas = sortSubnets(nets);
     var newip = ip;
-    var ranges = []
 
     for(const [nombre, hosts] of subredesOrdenadas) {
         const bitsParaHosts = Math.ceil(Math.log2(hosts + 2));
@@ -230,7 +230,19 @@ function vslmDOS(ip, nets) {
         ranges.push(result);
     }
     console.log(ranges);
+    saveInfo();
 }
+
+function saveInfo() {
+    var index = 0;
+    ranges.forEach(o => {
+        localStorage.setItem(`info${index}`, JSON.stringify(o));
+        index++;
+    });
+    localStorage.setItem('redes', index);
+}
+
+
 
 
 
