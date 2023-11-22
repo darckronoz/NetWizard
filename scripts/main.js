@@ -132,7 +132,6 @@ function convertDepToDictionary() {
 
 function getFisrt(ipdered) {
     var first = ipdered.split('.');
-    console.log(first);
     if(ipdered[3] == 255) {
         first[3]=0;
         if(ipdered[2] == 255) {
@@ -150,31 +149,37 @@ function getFisrt(ipdered) {
     return first.join('.');
 }
 
-function getLast(broadcast) {
-    var last = broadcast;
-    if(broadcast[3]===0) {
-        if(broadcast[2]===0) {
-            if(broadcast[1]===0) {
-                last[0]--;
-            }
-            last[1]--;
-        }
-        last[2]--;
-    }else {
-        last[3]--;
+function getLast(ipdered) {
+    var first = ipdered.split('.');
+  if(first[3]==0) {
+    if(first[2]==0) {
+      if(first[1]==0) {
+        first[0]--;
+      	return first.join('.');
+      }
+      first[1]--;
+      return first.join('.');
     }
-    return last;
+    first[2]--;
+  }else{
+  	first[3]--;
+  }
+  return first.join('.');
 }
 
 //obtiene a partir de un rango el direccionamiento
 function setRange(begin, end) {
     var a = begin;
     var b = end;
+    var fisrt = getFisrt(a.join('.'));
+    var last = getLast(b.join('.'));
 
     return red = {
         id: a.join('.'),
-        broadcast: b.join('.'),
-        mascara: 0
+        mascara: 0,
+        first: fisrt,
+        last: last,
+        broadcast: b.join('.')
     };
 }
 
@@ -223,62 +228,5 @@ function vslmDOS(ip, nets) {
     console.log(ranges);
 }
 
-
-function vslm(ip, nets) {
-    const claseDeRed = localStorage.getItem('class');
-
-    //ordenar redes
-    const subredesOrdenadas = sortSubnets(nets);
-
-    let redBase;
-    if (claseDeRed === 'A') {
-        redBase = ip.split('.').slice(0, 3).join('.');
-    } else if (claseDeRed === 'B') {
-        redBase = ip.split('.').slice(0, 2).join('.');
-    } else if (claseDeRed === 'C') {
-        redBase = ip.split('.').slice(0, 3).join('.');
-    
-        // Validar número máximo de hosts para la clase C
-        const maxHosts = 253;
-        const totalHosts = subredesOrdenadas.reduce((total, [, hosts]) => total + hosts, 0);
-        if (totalHosts > maxHosts) {
-            throw new Error(`El número total de hosts (${totalHosts}) excede el máximo permitido para la clase C (${maxHosts}).`);
-        }
-    }
-    console.log(redBase);
-    let inicioHost = 1;
-
-    for (const [nombre, hosts] of subredesOrdenadas) {
-        const bitsParaHosts = Math.ceil(Math.log2(hosts + 2));
-        const bitsParaSubred = 32 - bitsParaHosts;
-    
-        // Validar desbordamiento de la red para clase A
-        if (claseDeRed === 'A' && inicioHost + 2 ** bitsParaHosts - 2 > 2 ** 24 - 2) {
-            throw new Error(`Desbordamiento de red en subred ${nombre}. El número total de hosts excede el máximo permitido para la clase A.`);
-        }
-    
-        const mascaraSubred = (2 ** bitsParaSubred) - 1;
-        const incremento = 2 ** bitsParaHosts;
-    
-        const rangoInicio = inicioHost ;
-        const rangoFin = inicioHost + incremento - 3;
-    
-        // Validar desbordamiento de la dirección de broadcast para clase A
-        if (claseDeRed === 'A' && inicioHost + incremento - 2 > 2 ** 24 - 2) {
-            throw new Error(`Desbordamiento de dirección de broadcast en subred ${nombre}. El número total de hosts excede el máximo permitido para la clase A.`);
-        }
-    
-        // Validar desbordamiento de la red para clase B
-        if (claseDeRed === 'B' && inicioHost + 2 ** bitsParaHosts - 2 > 2 ** 16 - 2) {
-            throw new Error(`Desbordamiento de red en subred ${nombre}. El número total de hosts excede el máximo permitido para la clase B.`);
-        }
-        const direccionRed = `${redBase}.${inicioHost- 1} `;
-        const direccionBroadcast = `${redBase}.${inicioHost + incremento - 2}`;
-    
-        console.log(`${nombre}: Rango: ${redBase}.${rangoInicio}-${redBase}.${rangoFin}, Dirección de Red: ${direccionRed}, Dirección de Broadcast: ${direccionBroadcast}, mascara: ${bitsParaSubred}`);
-    
-        inicioHost += incremento;
-    }
-}
 
 
