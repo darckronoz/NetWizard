@@ -174,6 +174,7 @@ function setRange(begin, end) {
     return red = {
         id: a.join('.'),
         broadcast: b.join('.'),
+        mascara: 0
     };
 }
 
@@ -210,9 +211,13 @@ function vslmDOS(ip, nets) {
     var ranges = []
 
     for(const [nombre, hosts] of subredesOrdenadas) {
+
+        const bitsParaHosts = Math.ceil(Math.log2(hosts + 2));
+
         var aux = newip;
         var result = setLastIp(hosts, aux);
         newip = getFisrt(result.broadcast);
+        result.mascara = 32 - bitsParaHosts;
         ranges.push(result);
     }
     console.log(ranges);
