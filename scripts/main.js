@@ -231,6 +231,7 @@ function vslmDOS(ip, nets) {
     }
     console.log(ranges);
     saveInfo();
+    window.location.href = "salida.html";
 }
 
 function saveInfo() {
